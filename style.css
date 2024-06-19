@@ -1,0 +1,140 @@
+body{
+  background: linear-gradient(to top right, #4e21f1, #da4a61);
+  justify-content: center;
+  align-items: flex-start;
+  height: 100vh;
+  margin: 0;
+}
+
+.container {
+  text-align: center;
+}
+
+.title {
+  font-size: 2em;
+  padding-top: 5%;
+  color: #fff;
+}
+
+.input-container {
+  display: flex;
+  margin-top: 1%;
+  justify-content: center;
+  align-items: center;
+}
+
+.input-container input {
+  padding: 10px;
+  font-size: 1em;
+  border: 2px solid #000;
+  border-radius: 5px 0 0 15px;
+  margin: 0;
+}
+
+.input-container button {
+  padding: 10px;
+  font-size: 1em;
+  border: 2px solid #000;
+  border-radius: 0 15px 5px 0;
+  background-color: #fff;
+  cursor: pointer;
+  margin: 0;
+}
+
+.select-all-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.select-all-container input{
+  width: 20px;
+  height: 30px;
+}
+
+.select-all-container p{
+  margin-left: 1em;
+  font-size: 1.5em;
+}
+
+.list-container{
+  max-width: 80%;
+  height: 350px;
+  margin: 0 auto;
+  font-size: 200%;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid magenta;
+  border-radius: 15px 15px 15px 15px;
+  background-color: #fff;
+  margin-top: 1%;
+  padding-bottom: 50px;
+  position:relative;
+padding-bottom:50px;
+}
+
+.todo-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  height: 40px;
+}
+.todo-item:last-child {
+  margin-bottom: 0;
+}
+.todo-checkbox {
+  width: 20px;
+  height: 30px;
+}
+.todo-text {
+  flex-grow: 1;
+  text-align: center;
+}
+.todo-delete {
+  background-color: #ff4c4c;
+  border: none;
+  color: white;
+  margin-right: 10px;
+  cursor: pointer;
+  width: 40px;
+  border-radius: 4px;
+}
+
+.bottom-menu-container {
+  background-color: pink;
+  width: 100%;
+  height: 50px;
+  border-radius: 0 0 15px 15px;
+  position:absolute;
+  bottom:0;
+
+}
+
+.bottom-menu-left {
+  background-color: pink;
+  height: 50px;
+  width: 31%;
+  border-radius: 0 0 0 15px;
+}
+
+.bottom-menu-center {
+  background-color: pink;
+  height: 50px;
+  width: 31%;
+}
+
+.bottom-menu-right {
+  background-color: pink;
+  height: 50px;
+  width: 31%;
+  border-radius: 0 0 15px 0;
+}
+
+.button-delete-all {
+  padding: 10px;
+  font-size: 1em;
+  border: 2px solid #000;
+  background-color: red;
+  cursor: pointer;
+  margin: 0;
+}

@@ -3,22 +3,60 @@
    <head>
       <title>TodoJS App</title>
       <meta charset="utf-8">
-      <script src="app.js" defer></script>
+      <script src="index.js" defer></script>
+      <link rel="stylesheet" href="style.css">
    </head>
-   <body bgcolor="#19dbe6">
-      <h1>TodoJS App</h1>
-      <!-- input and btn -->
-      <div>
-         <input 
-         type="text"
-         id="input-name"
-         placeholder="Введите название"/>
-         <button class="" id="button-add-todo">
-            <p>добавить</p>
-         </button>
-      </div>
-      <div>
-         <p id="result">-</p>
-      </div>
+   <body>
+      <div class="container">
+         <div class="title">
+            TodoJS App
+         </div>
+         <div class="input-container">
+             <input 
+             type="text" 
+             id="input-name"
+             value="ddd"
+             placeholder="Введите задачу"/>
+             <button id="button-add-todo">
+               add
+            </button>
+         </div>
+         <div>
+          <div class="select-all-container">
+            <input 
+            type="checkbox"
+            id="select-all"/>
+            <p>select all</p>
+          </div>
+          <div>
+            <button 
+            class="button-delete-all" 
+            id="button-delete">
+              delete all checked
+            </button>
+          </div>
+         </div>
+         <div class="list-container">
+            <ul id="task-list">
+               <!--
+               <li class="todo-item">
+                  <input type="checkbox" 
+                  class="todo-checkbox">
+                  <div class="todo-text">fgdgdg</div>
+                  <button class="todo-delete">X</button>
+               </li>
+               -->
+           </ul>
+           <div class="bottom-menu-container">
+            <button class="bottom-menu-left" id="button-sort-all">1</button>
+            <button class="bottom-menu-center" id="button-sort-active">2</button>
+            <button class="bottom-menu-right" id="button-sort-complited">3</button>
+           </div>
+         </div>
+
+     </div>
    </body>
 </html>
+<!--
+<script>console.log(1414141)</script>
+-->
