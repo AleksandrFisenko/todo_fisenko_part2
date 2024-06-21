@@ -133,6 +133,7 @@ const deleteAllCheckedTasks = () => {
 const filterTasks = (event) => {
   if(event.target.tagName === "BUTTON"){
     //console.log(event)
+    currentPage = 1
     Array.from(event.target.parentElement.children).forEach(element => {
       element.className = "bottom-menu-unselected"
     })
@@ -166,7 +167,7 @@ const updateFilterContainer = () => {
 
 const getCurrentPage = () => {
   const filteredArray = getFilteredArray()
-  if(currentPage * TASK_PER_PAGE - TASK_PER_PAGE >= filteredArray.length){
+  if((currentPage - 1) * TASK_PER_PAGE >= filteredArray.length){
     currentPage--
   }
   const endIndex = currentPage * TASK_PER_PAGE;
@@ -177,9 +178,11 @@ const getCurrentPage = () => {
 }
 
 const switchPage = (event) => {
-  //console.log(event.target.id)
-  currentPage = event.target.id
-  render()
+  if(event.target.tagName === "BUTTON"){
+    //console.log(event.target.id)
+    currentPage = parseInt(event.target.id)
+    render()
+  }
 }
 
 const renderPagination = () => {
