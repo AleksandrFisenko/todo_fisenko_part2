@@ -15,13 +15,50 @@ const paginationContainer = document.querySelector("#pagination-container")
 let taskArray = []
 taskArray.push(
     {
-        id: Date.now(),
+        id: 1,
         name: "test1",
         isChecked: true,
     }
 )
+taskArray.push(
+  {
+      id: 2,
+      name: "test2",
+      isChecked: true,
+  }
+)
+taskArray.push(
+  {
+      id: 3,
+      name: "test3",
+      isChecked: true,
+  }
+)
+taskArray.push(
+  {
+      id: 4,
+      name: "test4",
+      isChecked: true,
+  }
+)
+taskArray.push(
+  {
+      id: 5,
+      name: "test5",
+      isChecked: true,
+  }
+)
+taskArray.push(
+  {
+      id: 6,
+      name: "test6",
+      isChecked: true,
+  }
+)
+
+
 let filterType = "all"
-let currentPage = 0
+let currentPage = 1
 
 const addTask = () => {
   if(inputTaskName.value.trim() !== ""){
@@ -128,15 +165,31 @@ const updateFilterContainer = () => {
 }
 
 const getCurrentPage = () => {
-  return getFilteredArray().slice(0, 5)
+  const filteredArray = getFilteredArray()
+  if(currentPage * TASK_PER_PAGE - TASK_PER_PAGE >= filteredArray.length){
+    currentPage--
+  }
+  const endIndex = currentPage * TASK_PER_PAGE;
+  const startIndex = endIndex - TASK_PER_PAGE
+  //console.log(startIndex, endIndex, filteredArray.length)
+  //console.log(getFilteredArray().slice(startIndex, endIndex))
+  return filteredArray.slice(startIndex, endIndex)
+}
+
+const switchPage = (event) => {
+  //console.log(event.target.id)
+  currentPage = event.target.id
+  render()
 }
 
 const renderPagination = () => {
   let paginationElements = ''
   for(let i=0; i < Math.ceil(getFilteredArray().length/TASK_PER_PAGE); i++){
+    //console.log(i+1, currentPage)
     paginationElements += `
     <button 
-    class="${(currentPage===i) ? "page-number-selected" : "page-number-unselected"}">
+    class="${(currentPage==i+1) ? "page-number-selected" : "page-number-unselected"}"
+    id="${i+1}">
     ${i+1}
     </button>
     `
@@ -179,7 +232,5 @@ selectAll.addEventListener("change", changeCheckAll)
 buttonDeleteAll.addEventListener("click", deleteAllCheckedTasks)
 
 filterContainer.addEventListener("click", filterTasks)
-//paginationContainer.addEventListener("click", switchPage)
+paginationContainer.addEventListener("click", switchPage)
 
-
-// slice 
