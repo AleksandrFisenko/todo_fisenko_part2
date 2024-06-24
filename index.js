@@ -90,7 +90,7 @@ const saveTask = (event) => {
 
 const editTask = (event) => {
   if((event.key === ENTER)) {
-    console.log("enter")
+    //console.log("enter")
 
     saveTask(event);
   }
@@ -98,7 +98,7 @@ const editTask = (event) => {
 }
 
 const onEditingTaskBlure = (event) => {
-  console.log("blur")
+  //console.log("blur")
   if(event.target.className === "todo-input") saveTask(event);
 }
 
