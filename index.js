@@ -107,7 +107,7 @@ const editTask = (event) => {
 }
 
 const onEditingTaskBlure = (event) => {
-  saveTask(event)
+  if(event.target.className === "todo-input") saveTask(event);
 }
 
 const changeCheckAll = (event) => {
