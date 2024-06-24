@@ -1,94 +1,86 @@
 const ENTER = "Enter"
 const ESCAPE = "Escape"
 const TASK_PER_PAGE = 5
+const DOUBLE_CLICK = 2
 
 const inputTaskName = document.querySelector("#input-name")
 const buttonAdd = document.querySelector("#button-add-todo")
 const selectAll = document.querySelector("#select-all")
 const taskList = document.querySelector("#task-list")
 const buttonDeleteAll = document.querySelector("#button-delete")
-const filterContainer = document.querySelector("#filter-container")
+const filterContainer = document.querySelector("#filter-container") // tab container 
 
 const paginationContainer = document.querySelector("#pagination-container")
 
 
 let taskArray = []
-taskArray.push(
+
+for(let i = 0; i<17; i++){
+  taskArray.push(
     {
-        id: 1,
-        name: "test1",
+        id: i,
+        name: `test ${i}`,
         isChecked: true,
     }
-)
-taskArray.push(
-  {
-      id: 2,
-      name: "test2",
-      isChecked: true,
-  }
-)
-taskArray.push(
-  {
-      id: 3,
-      name: "test3",
-      isChecked: true,
-  }
-)
-taskArray.push(
-  {
-      id: 4,
-      name: "test4",
-      isChecked: true,
-  }
-)
-taskArray.push(
-  {
-      id: 5,
-      name: "test5",
-      isChecked: true,
-  }
-)
-taskArray.push(
-  {
-      id: 6,
-      name: "test6",
-      isChecked: true,
-  }
-)
+  )
+}
 
 
 let filterType = "all"
 let currentPage = 1
 
+// const taskArray  = Array.from({length: 10000}, ()=>{return { id: Date.now(), name: "111", isChecked: false}}); 
+
+const isTextValid = (inputText) => {
+  return (inputText.trim() !== "")
+}
+
+// add validation
 const addTask = () => {
-  if(inputTaskName.value.trim() !== ""){
+  if(isTextValid(inputTaskName.value)){
     const task = {
       id: Date.now(),
       name: inputTaskName.value,
       isChecked: false,
   }
   taskArray.push(task)
+
   inputTaskName.value = ""
-  render()
+
+  filterType = "all"
+  
+  Array.from(filterContainer.children).forEach(element => {
+    element.className = "bottom-menu-unselected"
+  })
+  filterContainer.children[0].className = "bottom-menu-selected"
+  currentPage = Math.ceil(taskArray.length / TASK_PER_PAGE)
+
+  render();
   }
 }
 
+const addTaskOnKeydown = (event) => {
+  if(event.key == ENTER) addTask();
+}
+
 const handleClick = (event) => {
+  //console.log(event)
   const clickedItemName = event.target.classList.value
   const taskId = event.target.parentElement.id
-  if (clickedItemName == "todo-delete") {
-      taskArray = taskArray.filter(task => task.id != taskId)
-      render()
+  if (clickedItemName === "todo-delete") {
+    taskArray = taskArray.filter(task => task.id != taskId)
+    render()
   } 
-  if(clickedItemName == "todo-checkbox"){
-      taskArray.forEach(task => {
-          if(taskId == task.id){
-              task.isChecked = event.target.checked
-          }
-      })
-      render()
+  if(clickedItemName === "todo-checkbox"){
+    // forEach -> map
+    taskArray.forEach(task => {
+      if(taskId == task.id){
+          task.isChecked = event.target.checked
+      }
+    })
+    render()
   }
-  if ((event.detail == 2) && (clickedItemName == "todo-text")) {
+  if ((event.detail === DOUBLE_CLICK) && (clickedItemName === "todo-text")) {
 
     event.target.hidden = true
     event.target.previousElementSibling.hidden = false
@@ -97,25 +89,25 @@ const handleClick = (event) => {
   }
 }
 
-const editTask = (event) => {
-  //console.log(event.key)
-  if((event.key == ENTER) && (event.target.value.trim() !== "")){
+const saveTask = (event) => {
+  if(isTextValid(event.target.value)){
     const taskId = event.target.parentElement.id
-    
+
     taskArray.forEach(task => {
-      if(task.id == taskId){
-        task.name = event.target.value
-      }
+      if(task.id == taskId) task.name = event.target.value;
     })
-    render()
-  }
-  if(event.key == ESCAPE){
     render()
   }
 }
 
-const onEditingTaskBlure = () => {
-  render()
+const editTask = (event) => {
+  // console.log(event.key)
+  if((event.key === ENTER)) saveTask(event);
+  if(event.key == ESCAPE) render();
+}
+
+const onEditingTaskBlure = (event) => {
+  saveTask(event)
 }
 
 const changeCheckAll = (event) => {
@@ -131,7 +123,8 @@ const deleteAllCheckedTasks = () => {
 }
 
 const filterTasks = (event) => {
-  if(event.target.tagName === "BUTTON"){
+  //console.log(event.target.className)
+  if(event.target.className === "bottom-menu-unselected"){
     //console.log(event)
     currentPage = 1
     Array.from(event.target.parentElement.children).forEach(element => {
@@ -153,6 +146,14 @@ const getFilteredArray = () => {
   }
 }
 
+// const qqqq = {
+//   "all": taskArray,
+//   "completed": taskArray.filter(task => task.isChecked),
+//   "active" : taskArray.filter(task => !task.isChecked)
+// }
+
+// qqqq.all
+
 const updateCheckAll = () => {
   selectAll.checked = taskArray.every(task => (task.isChecked)) && taskArray.length
 }
@@ -167,9 +168,9 @@ const updateFilterContainer = () => {
 
 const getCurrentPage = () => {
   const filteredArray = getFilteredArray()
-  if((currentPage - 1) * TASK_PER_PAGE >= filteredArray.length){
-    currentPage--
-  }
+  const currentMinLength = (currentPage - 1) * TASK_PER_PAGE
+  if(currentMinLength >= filteredArray.length) currentPage--;
+
   const endIndex = currentPage * TASK_PER_PAGE;
   const startIndex = endIndex - TASK_PER_PAGE
   //console.log(startIndex, endIndex, filteredArray.length)
@@ -178,7 +179,7 @@ const getCurrentPage = () => {
 }
 
 const switchPage = (event) => {
-  if(event.target.tagName === "BUTTON"){
+  if(event.target.className === "page-number-unselected"){
     //console.log(event.target.id)
     currentPage = parseInt(event.target.id)
     render()
@@ -205,7 +206,7 @@ const render = () => {
   updateCheckAll()
   updateFilterContainer()
   renderPagination()
-  
+
   const renderArray = getCurrentPage()
 
   renderArray.forEach(task => {
@@ -225,6 +226,7 @@ const render = () => {
 render()
 
 buttonAdd.addEventListener("click", addTask)
+inputTaskName.addEventListener("keydown", addTaskOnKeydown)
 
 taskList.addEventListener("click", handleClick)
 taskList.addEventListener("keydown", editTask)
