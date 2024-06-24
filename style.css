@@ -2,7 +2,6 @@ body{
   background: linear-gradient(to top right, #4e21f1, #da4a61);
   justify-content: center;
   align-items: flex-start;
-  height: 100vh;
   margin: 0;
 }
 
@@ -157,7 +156,7 @@ body{
   max-width: 80%;
   height: auto;
   margin: 10%;
-  margin-top: 5%;
+  margin-top: 1%;
 }
 
 .page-number-selected {
@@ -167,6 +166,7 @@ body{
   font-size: 100%;
   color: green;
   border: black;
+  margin-top: 1%;
 }
 .page-number-unselected {
   border-radius: 50%;
@@ -175,4 +175,5 @@ body{
   font-size: 100%;
   color: black;
   border: black;
+  margin-top: 1%;
 }

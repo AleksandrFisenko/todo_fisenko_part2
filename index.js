@@ -8,43 +8,26 @@ const buttonAdd = document.querySelector("#button-add-todo")
 const selectAll = document.querySelector("#select-all")
 const taskList = document.querySelector("#task-list")
 const buttonDeleteAll = document.querySelector("#button-delete")
-const filterContainer = document.querySelector("#filter-container") // tab container 
-
+const filterContainer = document.querySelector("#filter-container")
 const paginationContainer = document.querySelector("#pagination-container")
 
-
 let taskArray = []
-
-for(let i = 0; i<17; i++){
-  taskArray.push(
-    {
-        id: i,
-        name: `test ${i}`,
-        isChecked: true,
-    }
-  )
-}
-
-
 let filterType = "all"
 let currentPage = 1
-
-// const taskArray  = Array.from({length: 10000}, ()=>{return { id: Date.now(), name: "111", isChecked: false}}); 
 
 const isTextValid = (inputText) => {
   return (inputText.trim() !== "")
 }
 
-const replaceSymbols = (unsafe) => {
-  return unsafe
+const replaceSymbols = (inputString) => {
+  return inputString
        .replace(/&/g, "&amp;")
        .replace(/</g, "&lt;")
        .replace(/>/g, "&gt;")
        .replace(/"/g, "&quot;")
-       .replace(/'/g, "&#039;");
+       .replace(/'/g, "&#039;")
 }
 
-// add validation
 const addTask = () => {
   if(isTextValid(inputTaskName.value)){
     const task = {
@@ -73,7 +56,6 @@ const addTaskOnKeydown = (event) => {
 }
 
 const handleClick = (event) => {
-  //console.log(event)
   const clickedItemName = event.target.classList.value
   const taskId = event.target.parentElement.id
   if (clickedItemName === "todo-delete") {
@@ -81,7 +63,6 @@ const handleClick = (event) => {
     render()
   } 
   if(clickedItemName === "todo-checkbox"){
-    // forEach -> map
     taskArray.forEach(task => {
       if(taskId == task.id){
           task.isChecked = event.target.checked
@@ -90,18 +71,15 @@ const handleClick = (event) => {
     render()
   }
   if ((event.detail === DOUBLE_CLICK) && (clickedItemName === "todo-text")) {
-
     event.target.hidden = true
     event.target.previousElementSibling.hidden = false
     event.target.previousElementSibling.focus()
-
   }
 }
 
 const saveTask = (event) => {
   if(isTextValid(event.target.value)){
     const taskId = event.target.parentElement.id
-
     taskArray.forEach(task => {
       if(task.id == taskId) task.name = replaceSymbols(event.target.value);
     })
@@ -110,7 +88,6 @@ const saveTask = (event) => {
 }
 
 const editTask = (event) => {
-  // console.log(event.key)
   if((event.key === ENTER)) saveTask(event);
   if(event.key == ESCAPE) render();
 }
@@ -132,9 +109,7 @@ const deleteAllCheckedTasks = () => {
 }
 
 const filterTasks = (event) => {
-  //console.log(event.target.className)
   if(event.target.className === "bottom-menu-unselected"){
-    //console.log(event)
     currentPage = 1
     Array.from(event.target.parentElement.children).forEach(element => {
       element.className = "bottom-menu-unselected"
@@ -155,21 +130,12 @@ const getFilteredArray = () => {
   }
 }
 
-// const qqqq = {
-//   "all": taskArray,
-//   "completed": taskArray.filter(task => task.isChecked),
-//   "active" : taskArray.filter(task => !task.isChecked)
-// }
-
-// qqqq.all
-
 const updateCheckAll = () => {
   selectAll.checked = taskArray.every(task => (task.isChecked)) && taskArray.length
 }
 
 const updateFilterContainer = () => {
   const selectedCount = taskArray.filter(task => task.isChecked).length;
-
   filterContainer.children[0].firstChild.data = `All (${taskArray.length})`
   filterContainer.children[1].firstChild.data = `Active (${taskArray.length - selectedCount})`
   filterContainer.children[2].firstChild.data = `Completed (${selectedCount})`
@@ -179,17 +145,13 @@ const getCurrentPage = () => {
   const filteredArray = getFilteredArray()
   const currentMinLength = (currentPage - 1) * TASK_PER_PAGE
   if(currentMinLength >= filteredArray.length) currentPage--;
-
   const endIndex = currentPage * TASK_PER_PAGE;
   const startIndex = endIndex - TASK_PER_PAGE
-  //console.log(startIndex, endIndex, filteredArray.length)
-  //console.log(getFilteredArray().slice(startIndex, endIndex))
   return filteredArray.slice(startIndex, endIndex)
 }
 
 const switchPage = (event) => {
   if(event.target.className === "page-number-unselected"){
-    //console.log(event.target.id)
     currentPage = parseInt(event.target.id)
     render()
   }
@@ -198,14 +160,12 @@ const switchPage = (event) => {
 const renderPagination = () => {
   let paginationElements = ''
   for(let i=0; i < Math.ceil(getFilteredArray().length/TASK_PER_PAGE); i++){
-    //console.log(i+1, currentPage)
     paginationElements += `
     <button 
     class="${(currentPage==i+1) ? "page-number-selected" : "page-number-unselected"}"
     id="${i+1}">
     ${i+1}
-    </button>
-    `
+    </button>`
   }
   paginationContainer.innerHTML = paginationElements
 }
@@ -215,9 +175,7 @@ const render = () => {
   updateCheckAll()
   updateFilterContainer()
   renderPagination()
-
   const renderArray = getCurrentPage()
-
   renderArray.forEach(task => {
 
       taskElement += `
@@ -232,19 +190,12 @@ const render = () => {
   taskList.innerHTML = taskElement
 }
 
-render()
-
 buttonAdd.addEventListener("click", addTask)
 inputTaskName.addEventListener("keydown", addTaskOnKeydown)
-
 taskList.addEventListener("click", handleClick)
 taskList.addEventListener("keydown", editTask)
 taskList.addEventListener("focusout", onEditingTaskBlure)
-
-
 selectAll.addEventListener("change", changeCheckAll)
 buttonDeleteAll.addEventListener("click", deleteAllCheckedTasks)
-
 filterContainer.addEventListener("click", filterTasks)
 paginationContainer.addEventListener("click", switchPage)
-
