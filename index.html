@@ -1,65 +1,44 @@
 <!DOCTYPE HTML>
 <html lang="en">
    <head>
-      <title>TodoJS App</title>
-      <meta charset="utf-8">
-      <script src="index.js" defer></script>
-      <link rel="stylesheet" href="style.css">
-   </head>
-   <body>
-      <div class="container">
-         <div class="title">
-            TodoJS App
-         </div>
-         <div class="input-container">
-             <input 
-             type="text" 
-             id="input-name"
-             value="<button>fsdfwf</button>"
-             maxlength="40"
-             placeholder="Введите задачу"/>
-             <button id="button-add-todo">
-               add
-            </button>
-         </div>
-         <div>
-          <div class="select-all-container">
-            <input 
-            type="checkbox"
-            id="select-all"/>
-            <p>select all</p>
-          </div>
-          <div>
-            <button 
-            class="button-delete-all" 
-            id="button-delete">
-              delete all checked
-            </button>
-          </div>
-         </div>
-         <div class="list-container">
-            <ul id="task-list">
-               <!--
-               <li class="todo-item">
-                  <input type="checkbox" 
-                  class="todo-checkbox">
-                  <input type="text" class="todo-input"
-                  hidden"/>
-                  <div class="todo-text">fgdgdg</div>
-                  <button class="todo-delete">X</button>
-               </li>
-               -->
-           </ul>
-           <div class="bottom-menu-container" id="filter-container">
-            <button class="bottom-menu-selected" id="all">All</button>
-            <button class="bottom-menu-unselected" id="active">Active</button>
-            <button class="bottom-menu-unselected" id="complited">Completed</button>
-           </div>
-         </div>
-         <div class="page-numbers-container" id="pagination-container">
-          <button class="page-number-selected" id="1">1</button>
-          <button class="page-number-unselected" id="2">2</button>
-         </div>
+    <title>TodoJS App</title>
+    <meta charset="utf-8">
+    <script src="index.js" defer></script>
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <div class="container">
+      <div class="title">TodoJS App</div>
+      <div class="input-container">
+        <input 
+        id="input-name"
+        maxlength="256"
+        placeholder="Введите задачу"/>
+        <button id="button-add-todo">add</button>
+      </div>
+      <div>
+        <div class="select-all-container">
+          <input 
+          type="checkbox"
+          id="select-all"/>
+          <p>select all</p>
         </div>
-   </body>
+        <div>
+          <button 
+          class="button-delete-all" 
+          id="button-delete">
+          delete all checked</button>
+        </div>
+      </div>
+      <div class="list-container">
+        <ul id="task-list"></ul>
+        <div class="bottom-menu-container" id="filter-container">
+          <button class="bottom-menu-selected" id="all">All</button>
+          <button class="bottom-menu-unselected" id="active">Active</button>
+          <button class="bottom-menu-unselected" id="complited">Completed</button>
+        </div>
+      </div>
+      <div class="page-numbers-container" id="pagination-container"></div>
+    </div>
+  </body>
 </html>

@@ -80,19 +80,25 @@ const handleClick = (event) => {
 const saveTask = (event) => {
   if(isTextValid(event.target.value)){
     const taskId = event.target.parentElement.id
+    event.target.value = replaceSymbols(event.target.value.replace(/ +/g, ' ').trim())
     taskArray.forEach(task => {
-      if(task.id == taskId) task.name = replaceSymbols(event.target.value);
+      if(task.id == taskId) task.name = event.target.value;
     })
     render()
   }
 }
 
 const editTask = (event) => {
-  if((event.key === ENTER)) saveTask(event);
-  if(event.key == ESCAPE) render();
+  if((event.key === ENTER)) {
+    console.log("enter")
+
+    saveTask(event);
+  }
+  if(event.key === ESCAPE) render();
 }
 
 const onEditingTaskBlure = (event) => {
+  console.log("blur")
   if(event.target.className === "todo-input") saveTask(event);
 }
 
@@ -181,7 +187,7 @@ const render = () => {
       taskElement += `
       <li class="todo-item" id="${task.id}">
           <input type="checkbox" class="todo-checkbox" ${task.isChecked ? 'checked' : ''}>
-          <input type="text" class="todo-input" maxlength="40" hidden value="${task.name}"/>
+          <input class="todo-input" maxlength="256" hidden value="${task.name}"/>
           <div class="todo-text">${task.name}</div>
           <button class="todo-delete">X</button>
       </li>
@@ -194,7 +200,7 @@ buttonAdd.addEventListener("click", addTask)
 inputTaskName.addEventListener("keydown", addTaskOnKeydown)
 taskList.addEventListener("click", handleClick)
 taskList.addEventListener("keydown", editTask)
-taskList.addEventListener("focusout", onEditingTaskBlure)
+taskList.addEventListener("blur", onEditingTaskBlure, true)
 selectAll.addEventListener("change", changeCheckAll)
 buttonDeleteAll.addEventListener("click", deleteAllCheckedTasks)
 filterContainer.addEventListener("click", filterTasks)
