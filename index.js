@@ -35,12 +35,21 @@ const isTextValid = (inputText) => {
   return (inputText.trim() !== "")
 }
 
+const replaceSymbols = (unsafe) => {
+  return unsafe
+       .replace(/&/g, "&amp;")
+       .replace(/</g, "&lt;")
+       .replace(/>/g, "&gt;")
+       .replace(/"/g, "&quot;")
+       .replace(/'/g, "&#039;");
+}
+
 // add validation
 const addTask = () => {
   if(isTextValid(inputTaskName.value)){
     const task = {
       id: Date.now(),
-      name: inputTaskName.value,
+      name: replaceSymbols(inputTaskName.value.replace(/ +/g, ' ').trim()),
       isChecked: false,
   }
   taskArray.push(task)
@@ -94,7 +103,7 @@ const saveTask = (event) => {
     const taskId = event.target.parentElement.id
 
     taskArray.forEach(task => {
-      if(task.id == taskId) task.name = event.target.value;
+      if(task.id == taskId) task.name = replaceSymbols(event.target.value);
     })
     render()
   }
@@ -214,7 +223,7 @@ const render = () => {
       taskElement += `
       <li class="todo-item" id="${task.id}">
           <input type="checkbox" class="todo-checkbox" ${task.isChecked ? 'checked' : ''}>
-          <input type="text" class="todo-input" hidden value="${task.name}"/>
+          <input type="text" class="todo-input" maxlength="40" hidden value="${task.name}"/>
           <div class="todo-text">${task.name}</div>
           <button class="todo-delete">X</button>
       </li>
