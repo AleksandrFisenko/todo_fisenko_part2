@@ -1,44 +1,40 @@
 <!DOCTYPE HTML>
 <html lang="en">
-   <head>
-    <title>TodoJS App</title>
-    <meta charset="utf-8">
-    <script src="index.js" defer></script>
-    <link rel="stylesheet" href="/style.css">
-  </head>
-  <body>
-    <div class="container">
-      <div class="title">TodoJS App</div>
-      <div class="input-container">
-        <input 
-        id="input-name"
-        maxlength="256"
-        placeholder="Введите задачу"/>
-        <button id="button-add-todo">add</button>
+
+<head>
+  <title>TodoJS App</title>
+  <meta charset="utf-8">
+  <script src="index.js" defer></script>
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="title">TodoJS App</div>
+    <div class="input-container">
+      <input id="input-name" maxlength="256" placeholder="Введите задачу" autocomplete="off"/>
+      <button id="button-add-todo">add</button>
+    </div>
+    <div>
+      <div class="select-all-container">
+        <input type="checkbox" id="select-all" />
+        <p>select all</p>
       </div>
       <div>
-        <div class="select-all-container">
-          <input 
-          type="checkbox"
-          id="select-all"/>
-          <p>select all</p>
-        </div>
-        <div>
-          <button 
-          class="button-delete-all" 
-          id="button-delete">
+        <button class="button-delete-all" id="button-delete">
           delete all checked</button>
-        </div>
       </div>
-      <div class="list-container">
-        <ul id="task-list"></ul>
-        <div class="bottom-menu-container" id="filter-container">
-          <button class="bottom-menu-selected" id="all">All</button>
-          <button class="bottom-menu-unselected" id="active">Active</button>
-          <button class="bottom-menu-unselected" id="complited">Completed</button>
-        </div>
-      </div>
-      <div class="page-numbers-container" id="pagination-container"></div>
     </div>
-  </body>
+    <div class="list-container">
+      <ul id="task-list"></ul>
+      <div class="bottom-menu-container" id="filter-container">
+        <button class="bottom-menu-selected" id="all">All (0)</button>
+        <button class="bottom-menu-unselected" id="active">Active (0)</button>
+        <button class="bottom-menu-unselected" id="complited">Completed (0)</button>
+      </div>
+    </div>
+    <div class="page-numbers-container" id="pagination-container"></div>
+  </div>
+</body>
+
 </html>

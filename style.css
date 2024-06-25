@@ -1,9 +1,8 @@
 body{
-  background: linear-gradient(to top right, #4e21f1, #da4a61);
+  background: #da4a61;
   justify-content: center;
   align-items: flex-start;
   margin: 0;
-  height: 100vh;
 }
 
 .container {
@@ -59,7 +58,7 @@ body{
 
 .list-container{
   max-width: 90%;
-  height: 370px;
+  min-height: 10em;
   margin: 0 auto;
   padding-top: 1px;
   font-size: 200%;
@@ -77,8 +76,6 @@ body{
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 50px;
-  max-height: 100px;
   width: 100%;
   margin-top: 10px;
 }
@@ -90,19 +87,26 @@ body{
 
 .todo-text {
   font-size: 100%;
-  width: 80%;
-  min-height: 100%;
+  width: 75%;
+  min-height: 50px;
+  padding: 1%;
   background-color: aqua;
   text-align: center;
   align-items: center;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  white-space: normal;
 }
+
 .todo-input {
   font-size: 100%;
-  width: 100%;
+  width: 80%;
+  min-height: 50px;
   background-color: aqua;
   text-align: center;
   align-items: center;
 }
+
 .todo-delete {
   background-color: #ff4c4c;
   border: none;
@@ -110,7 +114,9 @@ body{
   cursor: pointer;
   width: 50px;
   height: 50px;
-  border-radius: 0 5px 5px 0;
+  margin-left: 1%;
+  margin-right: 1%;
+  border-radius: 15px 5px 15px 5px;
 }
 
 .bottom-menu-container {
@@ -164,7 +170,8 @@ body{
   border-radius: 50%;
   width: 40px;
   height: 40px;
-  font-size: 100%;
+  font-size: 150%;
+  background-color: aqua;
   color: green;
   border: black;
   margin-top: 1%;
@@ -173,7 +180,7 @@ body{
   border-radius: 50%;
   width: 40px;
   height: 40px;
-  font-size: 100%;
+  font-size: 130%;
   color: black;
   border: black;
   margin-top: 1%;
