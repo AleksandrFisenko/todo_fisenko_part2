@@ -185,3 +185,16 @@ body{
   border: black;
   margin-top: 1%;
 }
+
+.error {
+  width: 70%;
+  height: 12vw;
+  font-size: 10vw;
+  font-weight: 800;
+  background-color: red;
+  color: greenyellow;
+  position: absolute;
+  z-index: 2;
+  top: 1%;
+  border-radius: 50%;
+}
