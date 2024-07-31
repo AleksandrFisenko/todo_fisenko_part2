@@ -3,7 +3,8 @@
   const ESCAPE = "Escape";
   const TASK_PER_PAGE = 5;
   const DOUBLE_CLICK = 2;
-  const BASE_URL = "http://localhost:8080/";
+  // const BASE_URL = "http://localhost:8080/";
+  const BASE_URL = "https://api.t4.academy.dunice-testing.com/"
   const PATH = "todos";
 
   const inputTaskName = document.querySelector("#input-name");
@@ -47,94 +48,102 @@
   }
 
   async function deleteTask(id) {
-    await fetch(BASE_URL + PATH + `/${id}`, {
-      method: "DELETE",
-    })
-      .then((response) => {
-        if (response.ok) return response.json();
-        throw new Error(response.status);
-      })
-      .then((json) => {
-        if (json.result === "ok") {
-          taskArray = taskArray.filter((task) => task.id != id);
-          render();
-        }
-      })
-      .catch((error) => {
-        renderError(error);
+    try {
+      const response = await fetch(`${BASE_URL}${PATH}/${id}`, {
+        method: "DELETE",
       });
-  }
 
+      if (!response.ok) {
+        const errorBody = await response.json();
+        throw new Error(errorBody.message);
+      }
+
+      const json = await response.json();
+
+      taskArray = taskArray.filter((task) => task.id != id);
+      render();
+    } catch (error) {
+      getAllTasks();
+      renderError(error.message);
+    }
+  }
+  
   async function deleteAllChecked() {
-    await fetch(BASE_URL + PATH, {
-      method: "DELETE",
-    })
-      .then((response) => {
-        if (response.ok) return response.json();
-        throw new Error(response.status);
-      })
-      .then((json) => {
-        if (json.result === "ok") {
-          taskArray = taskArray.filter((task) => !task.isChecked);
-          render();
-        }
-      })
-      .catch((error) => {
-        renderError(error);
+    try {
+      const response = await fetch(`${BASE_URL}${PATH}`, {
+        method: "DELETE",
       });
+
+      if (!response.ok) {
+        const errorBody = await response.json();
+        throw new Error(errorBody.message);
+      }
+
+      const json = await response.json();
+
+      taskArray = taskArray.filter((task) => !task.isChecked);
+      render();
+    } catch (error) {
+      getAllTasks();
+      renderError(error.message);
+    }
   }
 
   async function checkAllTasks(status) {
-    await fetch(BASE_URL + PATH + `?isChecked=${status}`, {
-      method: "PUT",
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
-        throw new Error(response.status);
-      })
-      .then((json) => {
-        if (json.result === "ok") {
-          taskArray.forEach((task) => {
-            task.isChecked = status;
-          });
-          render();
-        }
-      })
-      .catch((error) => {
-        renderError(error);
+    try {
+      const response = await fetch(`${BASE_URL}${PATH}`, {
+        method: "PUT",
+        body: JSON.stringify({ status: status }),
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
+
+      if (!response.ok) {
+        const errorBody = await response.json();
+        throw new Error(errorBody.message);
+      }
+
+      const json = await response.json();
+
+      taskArray.forEach((task) => {
+        task.isChecked = status;
+      });
+      render();
+    } catch (error) {
+      getAllTasks();
+      renderError(error.message);
+    }
   }
 
-  async function editTaskById(id, text, status) {
-    await fetch(BASE_URL + PATH + `/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ text: text, isChecked: status }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
-        throw new Error(response.status);
-      })
-      .then((json) => {
-        if (json.result === "ok") {
-          taskArray.forEach((task) => {
-            if (task.id == id) {
-              task.text = text;
-              task.isChecked = status;
-            }
-          });
-          render();
-        }
-      })
-      .catch((error) => {
-        renderError(error);
+  async function editTaskById(id, objUpdateTodo) {
+    try {
+      const response = await fetch(`${BASE_URL}${PATH}/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(objUpdateTodo),
       });
+
+      if (!response.ok) {
+        const errorBody = await response.json();
+        throw new Error(errorBody.message);
+      }
+
+      const json = await response.json();
+
+      taskArray.forEach((task) => {
+        if (task.id == json.id) {
+          task.text = json.text;
+          task.isChecked = json.isChecked;
+        }
+      });
+      render();
+    } catch (error) {
+      getAllTasks();
+      renderError(error.message);
+    }
   }
 
   const renderError = (error) => {
@@ -155,18 +164,9 @@
     return inputText.trim() !== "";
   };
 
-  const replaceSymbols = (inputString) => {
-    return inputString
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-  };
-
   const addTask = () => {
     if (isTextValid(inputTaskName.value)) {
-      postTask(replaceSymbols(inputTaskName.value.replace(/ +/g, " ").trim()));
+      postTask(inputTaskName.value.replace(/ +/g, " ").trim());
 
       inputTaskName.value = "";
 
@@ -195,8 +195,7 @@
     if (clickedItemName === "todo-checkbox") {
       editTaskById(
         taskId,
-        event.target.nextElementSibling.value,
-        event.target.checked
+        {isChecked: event.target.checked}
       );
       render();
     }
@@ -210,19 +209,15 @@
   const saveTask = (event) => {
     if (isTextValid(event.target.value)) {
       const taskId = event.target.parentElement.id;
-      const replacedValue = replaceSymbols(
-        event.target.value.replace(/ +/g, " ").trim()
-      );
-      console.log(
-        event.target.nextElementSibling.textContent,
-        event.target.value
-      );
-      if (event.target.nextElementSibling.textContent !== event.target.value)
+      const replacedValue = event.target.value.replace(/ +/g, " ").trim();
+      if (event.target.nextElementSibling.textContent !== event.target.value.trim()) {
         editTaskById(
           taskId,
-          replacedValue,
-          event.target.previousElementSibling.checked
+          {text: replacedValue},
         );
+        render();
+      }
+      render();
     } else render();
   };
 
@@ -239,12 +234,12 @@
   };
 
   const changeCheckAll = (event) => {
-    checkAllTasks(event.target.checked);
+    if (taskArray.length) checkAllTasks(event.target.checked);
     render();
   };
 
   const deleteAllCheckedTasks = () => {
-    deleteAllChecked();
+    if(taskArray.length && taskArray.some(task => task.isChecked)) deleteAllChecked();
     render();
   };
 
@@ -321,26 +316,42 @@
   };
 
   const render = () => {
-    let taskElement = "";
+    taskList.innerHTML = "";
     const renderArray = getCurrentPage();
     updateCheckAll();
     updateFilterContainer();
     renderPagination();
+
     renderArray.forEach((task) => {
-      taskElement += `
-      <li class="todo-item" id="${task.id}">
-          <input type="checkbox" class="todo-checkbox" ${
-            task.isChecked ? "checked" : ""
-          }>
-          <input class="todo-input" maxlength="256" hidden value="${
-            task.text
-          }"/>
-          <div class="todo-text">${task.text}</div>
-          <button class="todo-delete">X</button>
-      </li>
-      `;
+      const li = document.createElement("li");
+      li.className = "todo-item";
+      li.id = task.id;
+
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.className = "todo-checkbox";
+      checkbox.checked = task.isChecked;
+      li.appendChild(checkbox);
+
+      const input = document.createElement("input");
+      input.className = "todo-input";
+      input.maxLength = 255;
+      input.hidden = true;
+      input.value = task.text;
+      li.appendChild(input);
+
+      const div = document.createElement("div");
+      div.className = "todo-text";
+      div.textContent = task.text;
+      li.appendChild(div);
+
+      const button = document.createElement("button");
+      button.className = "todo-delete";
+      button.textContent = "X";
+      li.appendChild(button);
+
+      taskList.appendChild(li);
     });
-    taskList.innerHTML = taskElement;
   };
 
   getAllTasks();
